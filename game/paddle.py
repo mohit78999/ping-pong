@@ -16,7 +16,14 @@ class Paddle:
         return pygame.Rect(self.x, self.y, self.width, self.height)
 
     def auto_track(self, ball, screen_height):
-        if ball.y < self.y:
+    # track by centers with a deadzone
+        ball_center = ball.y + ball.height / 2
+        paddle_center = self.y + self.height / 2
+        deadzone = 8  # pixels tolerance to avoid jitter
+
+        if ball_center < paddle_center - deadzone:
             self.move(-self.speed, screen_height)
-        elif ball.y > self.y + self.height:
+        elif ball_center > paddle_center + deadzone:
             self.move(self.speed, screen_height)
+
+

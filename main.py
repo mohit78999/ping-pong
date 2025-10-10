@@ -3,6 +3,8 @@ from game.game_engine import GameEngine
 
 # Initialize pygame/Start application
 pygame.init()
+pygame.mixer.init()   # Initialize sound mixer
+
 
 # Screen dimensions
 WIDTH, HEIGHT = 800, 600
@@ -27,15 +29,29 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            # if game is over, allow restart options
+            if event.type == pygame.KEYDOWN and engine.game_over:
+                if event.key == pygame.K_3:
+                    engine.restart(best_of=3)
+                elif event.key == pygame.K_5:
+                    engine.restart(best_of=5)
+                elif event.key == pygame.K_7:
+                    engine.restart(best_of=7)
+                elif event.key == pygame.K_ESCAPE:
+                    running = False
 
-        engine.handle_input()
-        engine.update()
+        # only handle normal input when not game_over
+        if not engine.game_over:
+            engine.handle_input()
+            engine.update()
+
         engine.render(SCREEN)
 
         pygame.display.flip()
         clock.tick(FPS)
 
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()
