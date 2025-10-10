@@ -109,12 +109,22 @@ class GameEngine:
             rect = surf.get_rect(center=(self.width // 2, self.height // 2 - 30))
             screen.blit(surf, rect)
 
-        # Replay / Quit instructions
+    # Show final score below the winner text
+            score_text = f"Final Score: {self.player_score} - {self.ai_score}"
+            score_font = pygame.font.Font(None, 50)
+            score_render = score_font.render(score_text, True, WHITE)
+            screen.blit(score_render, (
+                self.width // 2 - score_render.get_width() // 2,
+                rect.bottom + 20  # neatly places below the winner text
+            ))
+
+    # Replay / Quit instructions
             small = pygame.font.SysFont("Arial", 24)
             option = "Press 3/5/7 to Replay (best of), or ESC to Quit"
             surf2 = small.render(option, True, WHITE)
-            rect2 = surf2.get_rect(center=(self.width // 2, self.height // 2 + 20))
+            rect2 = surf2.get_rect(center=(self.width // 2, self.height // 2 + 80))
             screen.blit(surf2, rect2)
+
 
     # --- Update the display ---
         pygame.display.flip()
